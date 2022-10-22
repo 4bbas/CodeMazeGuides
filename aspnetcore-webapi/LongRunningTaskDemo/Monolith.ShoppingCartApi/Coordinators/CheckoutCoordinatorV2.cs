@@ -62,7 +62,7 @@ namespace Monolith.ShoppingCartApi.Coordinators
         {
             foreach (var item in queue.GetConsumingEnumerable())
             {
-                _logger.LogInformation($"Queue count: {queue.Count}");
+                _logger.LogInformation($"Queue count: {queue.Count+1}");
                 await ProcessEachQueueItemAsync(item);
             }
         }
