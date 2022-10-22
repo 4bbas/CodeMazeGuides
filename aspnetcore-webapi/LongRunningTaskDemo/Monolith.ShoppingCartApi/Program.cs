@@ -34,8 +34,8 @@ builder.Services.AddSingleton<IObservable<QueueItem>>(x => x.GetRequiredService<
 builder.Services.AddSingleton<IObserver<QueueItem>>(x => x.GetRequiredService<ReplaySubject<QueueItem>>());
 
 //Coordinators Registraion
-builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV1>();
-//builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV2>();
+//builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV1>();
+builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV2>();
 //builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV3>();
 //builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV4>();
 

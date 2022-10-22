@@ -1,26 +1,30 @@
 ﻿using System.Collections.Concurrent;
 using Common.Models;
+using Monolith.ShoppingCartApi.Services;
 using Monolith.ShoppingCartApi.Services.Interfaces;
 
 namespace Monolith.ShoppingCartApi.Coordinators
 {
     public class CheckoutCoordinatorV2 : ICheckoutCoordinator
     {
+        private readonly ILogger _logger;
         private BlockingCollection<QueueItem> checkoutQueue;        
         private readonly IStockValidator _stockValidator;
         private readonly ITaxCalculator _taxCalculator;
         private readonly IPaymentProcessor _paymentProcessor;
         private readonly IReceiptGenerator _receiptGenerator;
 
-        public CheckoutCoordinatorV2(IStockValidator stockValidator,
+        public CheckoutCoordinatorV2(ILogger<StockValidator> logger,
+                                    IStockValidator stockValidator,
                                      ITaxCalculator taxCalculator,
                                      IPaymentProcessor paymentProcessor,
                                      IReceiptGenerator receiptGenerator)
         {
+            _logger = logger;
             _stockValidator = stockValidator;
             _taxCalculator = taxCalculator;
             _paymentProcessor = paymentProcessor;
-            _receiptGenerator = receiptGenerator;            
+            _receiptGenerator = receiptGenerator;
             
             checkoutQueue = CreateCheckoutQueue();
         }
@@ -41,7 +45,7 @@ namespace Monolith.ShoppingCartApi.Coordinators
             };
             
             checkoutQueue.Add(queueItem);
-
+            _logger.LogInformation($"Order: {queueItem.OrderId} Added to queue");
             return Task.FromResult(response);
         }
 
@@ -55,11 +59,12 @@ namespace Monolith.ShoppingCartApi.Coordinators
         }
 
         private async Task ProcessAsync(BlockingCollection<QueueItem> queue)
-        {           
-           foreach (var item in queue.GetConsumingEnumerable())
-           {
-              await ProcessEachQueueItemAsync(item);
-           }
+        {
+            foreach (var item in queue.GetConsumingEnumerable())
+            {
+                _logger.LogInformation($"Queue count: {queue.Count}");
+                await ProcessEachQueueItemAsync(item);
+            }
         }
 
         private async Task ProcessEachQueueItemAsync(QueueItem item)

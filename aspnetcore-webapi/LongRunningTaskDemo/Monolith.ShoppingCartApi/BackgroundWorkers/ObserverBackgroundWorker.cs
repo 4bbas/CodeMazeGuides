@@ -24,10 +24,15 @@ namespace Monolith.ShoppingCartApi.BackgroundWorkers
             _paymentProcessor = paymentProcessor;
             _receiptGenerator = receiptGenerator;
             _checkoutStream = checkoutStream;            
-        }       
-
+        }
+        public override Task StartAsync(CancellationToken cancellationToken)
+        {
+            Console.WriteLine("Starting observer service");
+            return base.StartAsync(cancellationToken);
+        }
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
+            Console.WriteLine("Stoping observer service");
             _subscription?.Dispose();
             await base.StopAsync(cancellationToken);
         }
