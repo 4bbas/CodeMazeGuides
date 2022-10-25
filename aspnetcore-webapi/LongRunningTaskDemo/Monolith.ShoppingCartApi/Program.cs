@@ -29,19 +29,19 @@ builder.Services.AddSingleton<IReceiptGenerator, ReceiptGenerator>();
 builder.Services.AddSingleton<ITaxCalculator, TaxCalculator>();
 
 //Observable Registartions
-builder.Services.AddSingleton<ReplaySubject<QueueItem>>();
-builder.Services.AddSingleton<IObservable<QueueItem>>(x => x.GetRequiredService<ReplaySubject<QueueItem>>());
-builder.Services.AddSingleton<IObserver<QueueItem>>(x => x.GetRequiredService<ReplaySubject<QueueItem>>());
+//builder.Services.AddSingleton<ReplaySubject<QueueItem>>();
+//builder.Services.AddSingleton<IObservable<QueueItem>>(x => x.GetRequiredService<ReplaySubject<QueueItem>>());
+//builder.Services.AddSingleton<IObserver<QueueItem>>(x => x.GetRequiredService<ReplaySubject<QueueItem>>());
 
 //Coordinators Registraion
-//builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV1>();
-builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV2>();
-//builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV3>();
-//builder.Services.AddSingleton<ICheckoutCoordinator, CheckoutCoordinatorV4>();
+//builder.Services.AddSingleton<ICheckoutService, CheckoutCoordinatorV1>();
+//builder.Services.AddSingleton<ICheckoutService, CheckoutCoordinatorV2>();
+//builder.Services.AddSingleton<ICheckoutService, CheckoutCoordinatorV3>();
+builder.Services.AddSingleton<ICheckoutService, CheckoutChannelService>();
 
 //BackgroundWorkers Registration
-builder.Services.AddHostedService<ObserverBackgroundWorker>();
-builder.Services.AddHostedService<ChannelBackgroundWorker>();
+//builder.Services.AddHostedService<ObserverBackgroundWorker>();
+builder.Services.AddHostedService<CheckoutChennelProcessor>();
 
 //Channel Registrations
 builder.Services.AddSingleton<ICheckoutProcessingChannel, CheckoutProcessingChannel>();

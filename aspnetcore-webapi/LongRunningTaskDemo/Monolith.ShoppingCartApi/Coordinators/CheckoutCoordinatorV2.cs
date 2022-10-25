@@ -5,7 +5,7 @@ using Monolith.ShoppingCartApi.Services.Interfaces;
 
 namespace Monolith.ShoppingCartApi.Coordinators
 {
-    public class CheckoutCoordinatorV2 : ICheckoutCoordinator
+    public class CheckoutCoordinatorV2 : ICheckoutService
     {
         private readonly ILogger _logger;
         private BlockingCollection<QueueItem> checkoutQueue;        
@@ -29,7 +29,7 @@ namespace Monolith.ShoppingCartApi.Coordinators
             checkoutQueue = CreateCheckoutQueue();
         }
 
-        public Task<CheckoutResponse> ProcessCheckoutAsync(CheckoutRequest request)
+        public Task<CheckoutResponse> AddCheckoutRequestAsync(CheckoutRequest request)
         {
             var response = new CheckoutResponse 
             { 

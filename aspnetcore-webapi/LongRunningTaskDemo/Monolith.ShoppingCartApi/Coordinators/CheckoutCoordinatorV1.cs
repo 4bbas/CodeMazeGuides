@@ -3,7 +3,7 @@ using Monolith.ShoppingCartApi.Services.Interfaces;
 
 namespace Monolith.ShoppingCartApi.Coordinators
 {
-    public class CheckoutCoordinatorV1 : ICheckoutCoordinator
+    public class CheckoutCoordinatorV1 : ICheckoutService
     {
         private readonly IStockValidator _stockValidator;
         private readonly ITaxCalculator _taxCalculator;
@@ -21,7 +21,7 @@ namespace Monolith.ShoppingCartApi.Coordinators
             _receiptGenerator = receiptGenerator;
         }
 
-        public async Task<CheckoutResponse> ProcessCheckoutAsync(CheckoutRequest request)
+        public async Task<CheckoutResponse> AddCheckoutRequestAsync(CheckoutRequest request)
         {
             var response = new CheckoutResponse 
             { 

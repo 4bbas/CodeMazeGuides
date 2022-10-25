@@ -16,7 +16,7 @@ namespace Monolith.ShoppingCartApi.Services
             var options = new BoundedChannelOptions(MaxMessagesInChannel)
             {
                 SingleWriter = false,
-                SingleReader = true
+                SingleReader = false
             };
 
             _channel = Channel.CreateBounded<QueueItem>(options);            

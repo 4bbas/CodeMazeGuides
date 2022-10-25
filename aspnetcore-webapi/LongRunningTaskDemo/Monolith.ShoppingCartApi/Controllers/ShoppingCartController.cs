@@ -8,16 +8,16 @@ namespace Monolith.ShoppingCartApi.Controllers
     [ApiController]
     public class ShoppingCartController : ControllerBase
     {
-        private readonly ICheckoutCoordinator _checkoutCoordinator;
+        private readonly ICheckoutService _checkoutService;
 
-        public ShoppingCartController(ICheckoutCoordinator checkoutCoordinator)
+        public ShoppingCartController(ICheckoutService checkoutService)
         {
-            _checkoutCoordinator = checkoutCoordinator;
+            _checkoutService = checkoutService;
         }
 
         [HttpPost("checkout")]
         [ProducesResponseType(typeof(CheckoutResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Checkout(CheckoutRequest request) 
-            => Ok(await _checkoutCoordinator.ProcessCheckoutAsync(request));
+            => Ok(await _checkoutService.AddCheckoutRequestAsync(request));
     }
 }

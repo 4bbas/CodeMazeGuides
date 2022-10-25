@@ -48,7 +48,7 @@ namespace Tests.Monolith.Tests
         [Test]
         public async Task WhenInvoked_ProcessCheckoutAsyncReturnsInProgressOrder()
         {
-            var response = await _sut.ProcessCheckoutAsync(_request);
+            var response = await _sut.AddCheckoutRequestAsync(_request);
 
             Assert.AreEqual(OrderStatus.Inprogress, response.OrderStatus);
             Assert.AreEqual("Your order is in progress and you will receive an email with all details once the processing completes.", response.Message);
@@ -57,7 +57,7 @@ namespace Tests.Monolith.Tests
         [Test]
         public async Task WhenStockValidationAndPaymentIsSuccessful_ProcessCheckoutAsyncCallsAllCheckoutProcessMethods()
         {
-            await _sut.ProcessCheckoutAsync(_request);
+            await _sut.AddCheckoutRequestAsync(_request);
             await Task.Delay(_asyncOpWaitTime);
 
             _stockValidator.Verify(x => x.ValidateAsync(It.IsAny<IEnumerable<OrderLineItem>>()), Times.Once);
@@ -71,7 +71,7 @@ namespace Tests.Monolith.Tests
         {
             _stockValidator.Setup(m => m.ValidateAsync(It.IsAny<IEnumerable<OrderLineItem>>())).ReturnsAsync(false);
 
-            await _sut.ProcessCheckoutAsync(_request);
+            await _sut.AddCheckoutRequestAsync(_request);
             await Task.Delay(_asyncOpWaitTime);
 
             _receiptGenerator.Verify(x => x.ProcessFailuresAsync(It.IsAny<Guid>(), It.IsAny<CheckoutResponse>()), Times.Once);
@@ -82,7 +82,7 @@ namespace Tests.Monolith.Tests
         {
             _paymentProcessor.Setup(m => m.ProcessAsync(It.IsAny<Guid>(), It.IsAny<PaymentInfo>(), It.IsAny<int>())).ReturnsAsync(false);
 
-            await _sut.ProcessCheckoutAsync(_request);
+            await _sut.AddCheckoutRequestAsync(_request);
             await Task.Delay(_asyncOpWaitTime);
             
             _receiptGenerator.Verify(x => x.ProcessFailuresAsync(It.IsAny<Guid>(), It.IsAny<CheckoutResponse>()), Times.Once);

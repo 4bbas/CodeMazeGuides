@@ -2,8 +2,8 @@
 
 namespace Monolith.ShoppingCartApi.Coordinators
 {
-    public interface ICheckoutCoordinator
+    public interface ICheckoutService
     {
-        Task<CheckoutResponse> ProcessCheckoutAsync(CheckoutRequest request);
+        Task<CheckoutResponse> AddCheckoutRequestAsync(CheckoutRequest request);
     }
 }

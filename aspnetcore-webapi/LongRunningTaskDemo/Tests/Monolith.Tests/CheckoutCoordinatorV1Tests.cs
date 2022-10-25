@@ -44,7 +44,7 @@ namespace Tests.Monolith.Tests
         [Test]
         public async Task WhenStockValidationAndPaymentIsSuccessful_ProcessCheckoutAsyncReturnsSuccessfulOrder()
         {           
-            var response = await _sut.ProcessCheckoutAsync(_request);
+            var response = await _sut.AddCheckoutRequestAsync(_request);
 
             Assert.AreEqual(OrderStatus.Successful, response.OrderStatus);
             Assert.AreEqual("Order was successfully placed. You will receive the receipt in email", response.Message);
@@ -53,7 +53,7 @@ namespace Tests.Monolith.Tests
         [Test]
         public async Task WhenStockValidationAndPaymentIsSuccessful_ProcessCheckoutAsyncCallsAllCheckoutProcessMethods()
         {
-            var response = await _sut.ProcessCheckoutAsync(_request);
+            var response = await _sut.AddCheckoutRequestAsync(_request);
 
             _stockValidator.Verify(x => x.ValidateAsync(It.IsAny<IEnumerable<OrderLineItem>>()), Times.Once);
             _taxCalculator.Verify(x => x.CalculateTaxAsync(It.IsAny<Guid>(), It.IsAny<IEnumerable<OrderLineItem>>()), Times.Once);
@@ -66,7 +66,7 @@ namespace Tests.Monolith.Tests
         {
             _stockValidator.Setup(m => m.ValidateAsync(It.IsAny<IEnumerable<OrderLineItem>>())).ReturnsAsync(false);
 
-            var response = await _sut.ProcessCheckoutAsync(_request);
+            var response = await _sut.AddCheckoutRequestAsync(_request);
 
             Assert.AreEqual(OrderStatus.Failure, response.OrderStatus);
             Assert.AreEqual("Item not available in stock", response.Message);
@@ -78,7 +78,7 @@ namespace Tests.Monolith.Tests
         {
             _paymentProcessor.Setup(m => m.ProcessAsync(It.IsAny<Guid>(), It.IsAny<PaymentInfo>(), It.IsAny<int>())).ReturnsAsync(false);
 
-            var response = await _sut.ProcessCheckoutAsync(_request);
+            var response = await _sut.AddCheckoutRequestAsync(_request);
 
             Assert.AreEqual(OrderStatus.Failure, response.OrderStatus);
             Assert.AreEqual("Payment failure", response.Message);

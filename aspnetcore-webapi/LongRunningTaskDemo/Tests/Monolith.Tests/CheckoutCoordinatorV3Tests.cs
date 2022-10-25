@@ -34,7 +34,7 @@ namespace Tests.Monolith.Tests
         [Test]
         public async Task WhenInvoked_ProcessCheckoutAsyncReturnsInProgressOrder()
         {
-            var response = await _sut.ProcessCheckoutAsync(_request);
+            var response = await _sut.AddCheckoutRequestAsync(_request);
 
             Assert.AreEqual(OrderStatus.Inprogress, response.OrderStatus);
             Assert.AreEqual("Your order is in progress and you will receive an email with all details once the processing completes.", response.Message);
@@ -43,7 +43,7 @@ namespace Tests.Monolith.Tests
         [Test]
         public async Task WhenInvoked_ProcessCheckoutAsyncSendsDataToObservableStream()
         {
-            await _sut.ProcessCheckoutAsync(_request);
+            await _sut.AddCheckoutRequestAsync(_request);
 
             _checkoutStream.Verify(x=>x.OnNext(It.IsAny<QueueItem>()), Times.Once);         
         }

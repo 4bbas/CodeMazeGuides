@@ -15,7 +15,7 @@ namespace Tests.Monolith.Tests
     public class CheckoutCoordinatorV4Tests
     {
         private Mock<ICheckoutProcessingChannel> _checkoutProcessingChannel;
-        private CheckoutCoordinatorV4 _sut;
+        private CheckoutChannelService _sut;
         private CheckoutRequest _request;
 
         [SetUp]
@@ -23,7 +23,7 @@ namespace Tests.Monolith.Tests
         {
             _checkoutProcessingChannel = new Mock<ICheckoutProcessingChannel>();
 
-            _sut = new CheckoutCoordinatorV4(_checkoutProcessingChannel.Object);
+            _sut = new CheckoutChannelService(_checkoutProcessingChannel.Object);
 
             _request = new CheckoutRequest
             {
@@ -36,7 +36,7 @@ namespace Tests.Monolith.Tests
         [Test]
         public async Task WhenInvoked_ProcessCheckoutAsyncReturnsInProgressOrder()
         {
-            var response = await _sut.ProcessCheckoutAsync(_request);
+            var response = await _sut.AddCheckoutRequestAsync(_request);
 
             Assert.AreEqual(OrderStatus.Inprogress, response.OrderStatus);
             Assert.AreEqual("Your order is in progress and you will receive an email with all details once the processing completes.", response.Message);
@@ -45,7 +45,7 @@ namespace Tests.Monolith.Tests
         [Test]
         public async Task WhenInvoked_ProcessCheckoutAsyncSendsDataChannel()
         {
-            await _sut.ProcessCheckoutAsync(_request);
+            await _sut.AddCheckoutRequestAsync(_request);
 
             _checkoutProcessingChannel.Verify(x => x.AddQueueItemAsync(It.IsAny<QueueItem>(),It.IsAny<CancellationToken>()), Times.Once);
         }

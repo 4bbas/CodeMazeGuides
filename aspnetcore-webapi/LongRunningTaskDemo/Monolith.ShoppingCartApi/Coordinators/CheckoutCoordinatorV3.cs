@@ -2,7 +2,7 @@
 
 namespace Monolith.ShoppingCartApi.Coordinators
 {
-    public class CheckoutCoordinatorV3 : ICheckoutCoordinator
+    public class CheckoutCoordinatorV3 : ICheckoutService
     {       
         private readonly IObserver<QueueItem> _checkoutStream;
 
@@ -11,7 +11,7 @@ namespace Monolith.ShoppingCartApi.Coordinators
             _checkoutStream = checkoutStream;
         }
 
-        public Task<CheckoutResponse> ProcessCheckoutAsync(CheckoutRequest request)
+        public Task<CheckoutResponse> AddCheckoutRequestAsync(CheckoutRequest request)
         {
             var response = new CheckoutResponse
             {

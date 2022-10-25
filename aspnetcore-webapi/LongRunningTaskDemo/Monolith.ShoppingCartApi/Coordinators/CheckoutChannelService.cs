@@ -3,16 +3,16 @@ using Monolith.ShoppingCartApi.Services.Interfaces;
 
 namespace Monolith.ShoppingCartApi.Coordinators
 {
-    public class CheckoutCoordinatorV4 : ICheckoutCoordinator
+    public class CheckoutChannelService : ICheckoutService
     {
         private readonly ICheckoutProcessingChannel _checkoutProcessingChannel;
 
-        public CheckoutCoordinatorV4(ICheckoutProcessingChannel checkoutProcessingChannel)
+        public CheckoutChannelService(ICheckoutProcessingChannel checkoutProcessingChannel)
         {
             _checkoutProcessingChannel = checkoutProcessingChannel;            
         }
 
-        public async Task<CheckoutResponse> ProcessCheckoutAsync(CheckoutRequest request)
+        public async Task<CheckoutResponse> AddCheckoutRequestAsync(CheckoutRequest request)
         {
             var response = new CheckoutResponse
             {
