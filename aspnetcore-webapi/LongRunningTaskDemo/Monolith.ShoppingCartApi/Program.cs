@@ -36,7 +36,7 @@ builder.Services.AddSingleton<ITaxCalculator, TaxCalculator>();
 //Coordinators Registraion
 //builder.Services.AddSingleton<ICheckoutService, CheckoutCoordinatorV1>();
 //builder.Services.AddSingleton<ICheckoutService, CheckoutCoordinatorV2>();
-//builder.Services.AddSingleton<ICheckoutService, CheckoutCoordinatorV3>();
+//builder.Services.AddSingleton<ICheckoutService, ObservableCheckoutService>();
 builder.Services.AddSingleton<ICheckoutService, CheckoutChannelService>();
 
 //BackgroundWorkers Registration

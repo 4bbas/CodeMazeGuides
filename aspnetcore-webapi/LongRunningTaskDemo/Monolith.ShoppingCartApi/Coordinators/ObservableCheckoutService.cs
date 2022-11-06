@@ -2,11 +2,11 @@
 
 namespace Monolith.ShoppingCartApi.Coordinators
 {
-    public class CheckoutCoordinatorV3 : ICheckoutService
+    public class ObservableCheckoutService : ICheckoutService
     {       
         private readonly IObserver<QueueItem> _checkoutStream;
 
-        public CheckoutCoordinatorV3(IObserver<QueueItem> checkoutStream)
+        public ObservableCheckoutService(IObserver<QueueItem> checkoutStream)
         {
             _checkoutStream = checkoutStream;
         }

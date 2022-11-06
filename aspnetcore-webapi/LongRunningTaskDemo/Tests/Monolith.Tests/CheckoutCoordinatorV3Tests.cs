@@ -13,7 +13,7 @@ namespace Tests.Monolith.Tests
     public class CheckoutCoordinatorV3Tests
     {
         private Mock<IObserver<QueueItem>> _checkoutStream;
-        private CheckoutCoordinatorV3 _sut;
+        private ObservableCheckoutService _sut;
         private CheckoutRequest _request;
 
         [SetUp]
@@ -21,7 +21,7 @@ namespace Tests.Monolith.Tests
         {
             _checkoutStream = new Mock<IObserver<QueueItem>>();           
             
-            _sut = new CheckoutCoordinatorV3(_checkoutStream.Object);
+            _sut = new ObservableCheckoutService(_checkoutStream.Object);
 
             _request = new CheckoutRequest
             {
